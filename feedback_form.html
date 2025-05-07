@@ -7,18 +7,18 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background: #1a2a44; /* رنگ پس‌زمینه تیره تلگرام */
-            color: #ffffff; /* متن سفید */
+            background: #1a2a44;
+            color: #ffffff;
             margin: 0;
-            direction: rtl; /* راست‌چین */
-            text-align: right; /* راست‌چین */
+            direction: rtl;
+            text-align: right;
         }
         h2 {
-            color: #00C4B4; /* رنگ سبز-آبی تلگرام */
+            color: #00C4B4;
             text-align: center;
         }
         form {
-            background: #23395d; /* رنگ پس‌زمینه فرم شبیه تلگرام */
+            background: #23395d;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -37,12 +37,12 @@
             background: #ffffff;
             color: #000000;
             font-size: 16px;
-            text-align: right; /* راست‌چین */
+            text-align: right;
         }
         button {
             width: 100%;
             padding: 10px;
-            background: #00C4B4; /* رنگ دکمه سبز تلگرام */
+            background: #00C4B4;
             color: white;
             border: none;
             border-radius: 5px;
@@ -51,7 +51,7 @@
             font-weight: bold;
         }
         button:hover {
-            background: #00a69a; /* رنگ سبز تیره‌تر برای هاور */
+            background: #00a69a;
         }
     </style>
 </head>
@@ -100,14 +100,22 @@
             const feedback_category = document.getElementById("feedback_category").value;
             const feedback_subcategory = document.getElementById("feedback_subcategory").value;
 
-            const user = { id: "test", username: "testuser" }; // برای تست توی مرورگر
+            // گرفتن user_id و username از تلگرام
+            let user = { id: "unknown", username: "بدون نام" };
+            try {
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                    user = window.Telegram.WebApp.initDataUnsafe.user || user;
+                }
+            } catch (error) {
+                console.log("Not running in Telegram, using default user.");
+            }
 
             const response = await fetch("https://script.google.com/macros/s/AKfycbzGM4ribch9QSjRE78O439VDC2cLfThXs43GBhP7Sy3kCwe1_Ogr44adigJUUTBLkrs/exec", {
                 method: "POST",
                 body: JSON.stringify({
                     name,
                     user_id: user.id,
-                    username: user.username,
+                    username: user.username || "بدون نام",
                     feedback_type,
                     feedback_content,
                     feedback_score,
@@ -120,10 +128,17 @@
             });
 
             if (response.ok) {
-                alert("فیدبک با موفقیت ارسال شد! 😊");
+                alert("ممنون از فیدبکت! نظرت با موفقیت ثبت شد 🌟");
+                try {
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        window.Telegram.WebApp.close();
+                    }
+                } catch (error) {
+                    console.log("Not running in Telegram, skipping close.");
+                }
             } else {
                 const errorText = await response.text();
-                alert("خطا: " + errorText);
+                alert("خطا در ارسال: " + errorText);
             }
         });
     </script>
