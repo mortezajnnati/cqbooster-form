@@ -132,7 +132,9 @@
             let userId = "unknown";
             let userName = "بدون نام";
             try {
-                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                // اطمینان از اینکه WebApp تلگرام مقداردهی اولیه شده
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.ready();
                     const user = window.Telegram.WebApp.initDataUnsafe.user;
                     if (user) {
                         userId = user.id ? user.id.toString() : "unknown";
