@@ -168,9 +168,12 @@
             if (response.ok) {
                 alert("نظرتون با موفقیت ثبت شد. از اینکه با ما همراه هستید، سپاسگزاریم!");
                 document.getElementById("globalForm").reset();
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.close();
-                }
+                // تأخیر برای اطمینان از ارسال داده‌ها قبل از بسته شدن
+                setTimeout(() => {
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        window.Telegram.WebApp.close();
+                    }
+                }, 500);
             } else {
                 const errorText = await response.text();
                 alert("خطا در ارسال: " + errorText);
