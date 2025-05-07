@@ -99,13 +99,13 @@
             <input type="text" id="name" placeholder="اسم خودت رو بنویس" required>
             <label>تلفن یا ایمیل (اختیاری):</label>
             <input type="text" id="contact" placeholder="تلفن یا ایمیلت رو وارد کن">
-            <label>رضایتت چقدره؟ (1-5):</label>
+            <label>رضایتت چطوره؟</label>
             <select id="score" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="خیلی بد 😞">خیلی بد 😞</option>
+                <option value="بد 😕">بد 😕</option>
+                <option value="معمولی 😐" selected>معمولی 😐</option>
+                <option value="خوب 😊">خوب 😊</option>
+                <option value="عالی 🤩">عالی 🤩</option>
             </select>
             <label>نظرت چیه؟</label>
             <textarea id="message" placeholder="هر چی تو ذهنته بنویس" required></textarea>
@@ -143,7 +143,7 @@
                 console.error("Error getting Telegram user data:", error);
             }
 
-            const response = await fetch("https://script.google.com/macros/s/AKfycbzGM4ribch9QSjRE78O439VDC2cLfThXs43GBhP7Sy3kCwe1_Ogr44adigJUUTBLkrs/exec", {
+            const response = await fetch("https://script.google.com/macros/s/AKfycbxIzWRlVOc_jlG1twb9D4wODWjpmBeBH-H2dpEhhW9_2pLrip-xx2maFFUzjDuSYREy/exec", {
                 method: "POST",
                 body: JSON.stringify({
                     name,
