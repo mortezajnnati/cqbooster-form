@@ -132,23 +132,22 @@
             let userId = "unknown";
             let userName = "بدون نام";
             try {
-                // اطمینان از اینکه WebApp تلگرام مقداردهی اولیه شده
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.ready();
                     const initData = window.Telegram.WebApp.initDataUnsafe;
-                    console.log("Telegram initData:", initData); // لاگ برای دیباگ
                     if (initData && initData.user) {
                         const user = initData.user;
                         userId = user.id ? user.id.toString() : "unknown";
                         userName = user.username || user.first_name || "بدون نام";
                     } else {
-                        console.error("No user data found in initDataUnsafe");
+                        throw new Error("داده‌های کاربر در دسترس نیست. لطفاً از تلگرام استفاده کنید.");
                     }
                 } else {
-                    console.error("Telegram WebApp not available");
+                    throw new Error("لطفاً این فرم را از داخل تلگرام باز کنید.");
                 }
             } catch (error) {
-                console.error("Error getting Telegram user data:", error);
+                alert("خطا در دریافت اطلاعات کاربر: " + error.message);
+                return;
             }
 
             const response = await fetch("https://script.google.com/macros/s/AKfycbxQkg6iORMtnIj0xExHddl-LdNgAjR2kGYTA5tYdsAC_21D6lKHZuDC1ZE5tqzES6Uj/exec", {
