@@ -101,19 +101,17 @@
             const feedback_subcategory = document.getElementById("feedback_subcategory").value;
 
             // گرفتن user_id و username از تلگرام
-            let user_id = "unknown";
-            let username = "بدون نام";
+            let user = { id: "unknown", username: "بدون نام" };
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-                user_id = window.Telegram.WebApp.initDataUnsafe.user.id || "unknown";
-                username = window.Telegram.WebApp.initDataUnsafe.user.username || "بدون نام";
+                user = window.Telegram.WebApp.initDataUnsafe.user;
             }
 
             const response = await fetch("https://script.google.com/macros/s/AKfycbzGM4ribch9QSjRE78O439VDC2cLfThXs43GBhP7Sy3kCwe1_Ogr44adigJUUTBLkrs/exec", {
                 method: "POST",
                 body: JSON.stringify({
                     name,
-                    user_id: user_id,
-                    username: username,
+                    user_id: user.id || "unknown",
+                    username: user.username || "بدون نام",
                     feedback_type,
                     feedback_content,
                     feedback_score,
@@ -127,12 +125,8 @@
 
             if (response.ok) {
                 alert("ممنون از فیدبکت! نظرت با موفقیت ثبت شد 🌟");
-                try {
-                    if (window.Telegram && window.Telegram.WebApp) {
-                        window.Telegram.WebApp.close();
-                    }
-                } catch (error) {
-                    console.log("Not running in Telegram, skipping close.");
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.close();
                 }
             } else {
                 const errorText = await response.text();
