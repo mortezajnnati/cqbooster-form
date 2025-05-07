@@ -135,11 +135,17 @@
                 // اطمینان از اینکه WebApp تلگرام مقداردهی اولیه شده
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.ready();
-                    const user = window.Telegram.WebApp.initDataUnsafe.user;
-                    if (user) {
+                    const initData = window.Telegram.WebApp.initDataUnsafe;
+                    console.log("Telegram initData:", initData); // لاگ برای دیباگ
+                    if (initData && initData.user) {
+                        const user = initData.user;
                         userId = user.id ? user.id.toString() : "unknown";
                         userName = user.username || user.first_name || "بدون نام";
+                    } else {
+                        console.error("No user data found in initDataUnsafe");
                     }
+                } else {
+                    console.error("Telegram WebApp not available");
                 }
             } catch (error) {
                 console.error("Error getting Telegram user data:", error);
